@@ -1,8 +1,6 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-#endif // ENUMS_H
-
 enum Actions {
     ADD         = 0,
     PUSH        = 1,
@@ -20,3 +18,15 @@ enum Flags {
     SKIPPED_FILTERS  = 3,
     UNDEFINED2       = 4
 };
+
+enum Options {
+    LAST_MODIFIED   = 0,
+    DATE_CREATED    = 1,
+    MAX_SIZE        = 2,
+    MIN_SIZE        = 3,
+    EXTENSION       = 4,
+    TYPE            = 5,
+    UNDEFINED3      = 6
+};
+
+#endif // ENUMS_H

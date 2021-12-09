@@ -1,14 +1,24 @@
 #ifndef STATEMACHINE_H
 #define STATEMACHINE_H
 
+/* Global Imports */
 #include "statemachine_global.h"
+#include "Enums.h"
 
+/* System Imports */
 #include <QRegExp>
 #include <QString>
 #include <QStringList>
 #include <QFileInfo>
 
-#include "Enums.h"
+
+/* Commands Imports */
+#include "commandfactory.h"
+#include "add_cmd.h"
+#include "clear_cmd.h"
+#include "get_cmd.h"
+#include "push_cmd.h"
+#include "search.h"
 
 class STATEMACHINE_EXPORT Statemachine
 {
@@ -27,6 +37,18 @@ public:
 
     /* Overall */
     void manageUserInput(QString userInput);
+    void setFlag(Flags nFlag);
+    void setAction(Actions nAction);
+    void setOption(Options nOption);
+    Flags getFlag();
+    Options getOption();
+    Actions getAction();
+
+private:
+    CommandFactory _factory;
+    Flags _currentFlag;
+    Actions _currentAction;
+    Options _currentOption;
 };
 
 #endif // STATEMACHINE_H

@@ -8,6 +8,7 @@ class CommandFactory
 {
 public:
     CommandFactory();
+    virtual void execute(Actions, Flags, Options);
 };
 
 #endif // COMMANDFACTORY_H
