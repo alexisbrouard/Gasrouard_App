@@ -11,14 +11,14 @@
 #include <QStringList>
 #include <QFileInfo>
 
-
 /* Commands Imports */
 #include "commandfactory.h"
 #include "add_cmd.h"
 #include "clear_cmd.h"
 #include "get_cmd.h"
 #include "push_cmd.h"
-#include "search.h"
+#include "search_cmd.h"
+#include "index_cmd.h"
 
 class STATEMACHINE_EXPORT Statemachine
 {
@@ -32,20 +32,18 @@ public:
     bool isPath(QString const& str);
 
     /* States */
-    Flags isFlag(QString const& str);
+    Flags   isFlag(QString const& str);
     Actions isAction(QString const& str);
+    Options isOption(QString const& str);
 
     /* Overall */
-    void manageUserInput(QString userInput);
-    void setFlag(Flags nFlag);
-    void setAction(Actions nAction);
-    void setOption(Options nOption);
-    Flags getFlag();
+    void    manageUserInput(QString userInput);
+    Flags   getFlag();
     Options getOption();
     Actions getAction();
 
 private:
-    CommandFactory _factory;
+    CommandFactory *_factory;
     Flags _currentFlag;
     Actions _currentAction;
     Options _currentOption;

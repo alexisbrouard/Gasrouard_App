@@ -2,12 +2,13 @@
 #define GET_CMD_H
 
 #include "Enums.h"
+#include "commandfactory.h"
 
-class Get_cmd
+class Get_cmd : public CommandFactory
 {
 public:
     Get_cmd();
-    void execute(Actions, Flags, Options);
+    bool execute(Actions, Flags, Options);
 };
 
 #endif // GET_CMD_H

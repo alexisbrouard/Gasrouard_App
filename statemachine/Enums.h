@@ -29,4 +29,12 @@ enum Options {
     UNDEFINED3      = 6
 };
 
+enum Status {
+    START           = 0,
+    STOP            = 1,
+    PAUSE           = 2,
+    RESUME          = 3,
+    STATE           = 4,
+};
+
 #endif // ENUMS_H

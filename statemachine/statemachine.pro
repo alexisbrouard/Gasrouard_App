@@ -14,6 +14,7 @@ SOURCES += \
     clear_cmd.cpp \
     commandfactory.cpp \
     get_cmd.cpp \
+    index_cmd.cpp \
     push_cmd.cpp \
     search_cmd.cpp \
     statemachine.cpp
@@ -24,6 +25,7 @@ HEADERS += \
     clear_cmd.h \
     commandfactory.h \
     get_cmd.h \
+    index_cmd.h \
     push_cmd.h \
     search_cmd.h \
     statemachine_global.h \

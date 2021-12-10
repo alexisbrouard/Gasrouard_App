@@ -1,38 +1,38 @@
 #include "statemachine.h"
 
-Statemachine::Statemachine()
-{
-}
+Statemachine::Statemachine() {}
 
-/*
-*methods to get and check enums is fucked up, must redo and clean
-*/
 void Statemachine::manageUserInput(QString userInput)
 {
     QStringList fullInput = userInput.split(" ");
-    if (isAction(fullInput[0]) && isFlag(fullInput[1])) {
-        //_factory =;
-        /*switch(_currentAction) {
+    _currentAction = isAction(fullInput[0]);
+    _currentFlag = isFlag(fullInput[1]);
+    _currentOption = isOption(fullInput[2]);
+
+    if (_currentAction != Actions::UNDEFINED && _currentFlag != Flags::UNDEFINED2) {
+        switch(_currentAction) {
             case Actions::ADD :
-                _factory = new Add_cmd;
+                _factory = new Add_cmd();
                 break;
             case Actions::CLEAR :
+                _factory = new Clear_cmd();
                 break;
             case Actions::GET :
+                _factory = new Get_cmd();
                 break;
             case Actions::INDEXER :
+                _factory = new Index_cmd();
                 break;
             case Actions::PUSH :
+                _factory = new Push_cmd();
                 break;
             case Actions::SEARCH :
+                _factory = new Search_cmd();
                 break;
             default :
                 break;
-        }*/
-
-        setAction( isAction(fullInput[0]) );
-        setFlag( isFlag(fullInput[1]) );
-        //_factory = new CommandFactory();
+        }
+        _factory->execute(_currentAction, _currentFlag, _currentOption);
     }
 }
 
@@ -90,9 +90,21 @@ enum Flags Statemachine::isFlag(QString const &str)
     return UNDEFINED2;
 }
 
-void Statemachine::setFlag(Flags nFlag)
+enum Options Statemachine::isOption(QString const &str)
 {
-    _currentFlag = nFlag;
+    if (str.compare("LAST_MODIFIED"))
+        return LAST_MODIFIED;
+    if (str.compare("DATE_CREATED"))
+        return DATE_CREATED;
+    if (str.compare("MAX_SIZE"))
+        return MAX_SIZE;
+    if (str.compare("MIN_SIZE"))
+        return MIN_SIZE;
+    if (str.compare("EXTENSION"))
+        return EXTENSION;
+    if (str.compare("TYPE"))
+        return TYPE;
+    return UNDEFINED3;
 }
 
 Flags Statemachine::getFlag()
@@ -100,12 +112,12 @@ Flags Statemachine::getFlag()
     return _currentFlag;
 }
 
-void Statemachine::setAction(Actions nAction)
-{
-    _currentAction = nAction;
-}
-
 Actions Statemachine::getAction()
 {
     return _currentAction;
+}
+
+Options Statemachine::getOption()
+{
+    return _currentOption;
 }

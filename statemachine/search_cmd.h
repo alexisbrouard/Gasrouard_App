@@ -2,12 +2,13 @@
 #define SEARCH_CMD_H
 
 #include "Enums.h"
+#include "commandfactory.h"
 
-class Search_cmd
+class Search_cmd : public CommandFactory
 {
 public:
     Search_cmd();
-    void execute(Actions, Flags, Options);
+    bool execute(Actions, Flags, Options);
 };
 
 #endif // SEARCH_CMD_H

@@ -2,12 +2,13 @@
 #define CLEAR_CMD_H
 
 #include "Enums.h"
+#include "commandfactory.h"
 
-class Clear_cmd
+class Clear_cmd : public CommandFactory
 {
 public:
     Clear_cmd();
-    void execute(Actions, Flags, Options);
+    bool execute(Actions, Flags, Options);
 };
 
 #endif // CLEAR_CMD_H
