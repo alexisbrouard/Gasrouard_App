@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include "indexer.h"
 
 int main(int argc, char *argv[])
 {
