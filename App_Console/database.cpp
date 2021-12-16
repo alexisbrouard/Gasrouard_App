@@ -1,9 +1,13 @@
+#define INSERTS_COUNT 10000
+#define DISPLAY_EVERY 1000
+#define func_width    50
+
 #include "database.h"
 
 Database::Database()
 {
     _pool.setMaxThreadCount(1);
-    _Database = QSqlDatabase::addDatabase("QSQLITE, QODBC, QPSQL");
+    _Database = QSqlDatabase::addDatabase("QSQLITE");
     _Database.setDatabaseName("files.db");
     if(!_Database.open())
     {
@@ -36,11 +40,15 @@ void Database::setupDB()
     qDebug() << __FUNCTION__ << __LINE__ << "Database créée / connectée";
 }
 
-bool Database::addDatabase(QVector<QStringList> _vectorIndexes)
+void Database::addDatabase(QVector<QStringList> _vectorIndexes)
 {
-    QFuture<void> future =  QtConcurrent::run(&_pool, [this, _vectorIndexes]() {
-        QSqlQuery query;
+    QFuture<void> future = QtConcurrent::run(&_pool, [this, _vectorIndexes]() {
+        QSqlQuery query(_Database);
 
+        query.exec("pragma temp_store = memory");
+        query.exec("PRAGMA synchronous = normal");
+        query.exec("pragma mmap_size = 30000000000");
+        query.exec("PRAGMA journal_mode = wal");
         query.prepare("INSERT INTO files(path, name, suffix, size, modified, status) VALUES(?, ?, ?, ?, ?, ?)");
 
         for(int i = 0; i< _vectorIndexes.size(); i++)
@@ -56,5 +64,4 @@ bool Database::addDatabase(QVector<QStringList> _vectorIndexes)
             query.exec();
         }
     });
-    return false;
 }

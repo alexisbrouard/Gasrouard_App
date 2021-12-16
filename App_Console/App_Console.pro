@@ -1,5 +1,5 @@
 QT -= gui
-QT += sql
+QT += sql concurrent core
 
 CONFIG += c++11 console
 CONFIG -= app_bundle

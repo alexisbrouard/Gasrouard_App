@@ -1,6 +1,7 @@
 #ifndef INDEXER_H
 #define INDEXER_H
 
+#include <QCoreApplication>
 #include <QString>
 #include <QDirIterator>
 #include <QVector>
@@ -18,7 +19,7 @@ class Indexer : QObject
 public:
     Indexer();
     ~Indexer();
-    bool scanRepository(QString m_start_path);
+    void scanRepository(QString m_start_path);
     void sendDatabase();
 private:
     QVector<QStringList> _vectorIndexes;

@@ -19,7 +19,7 @@ class Database : QObject
 public:
     Database();
     void setupDB();
-    bool addDatabase(QVector<QStringList> _VectorIndexes);
+    void addDatabase(QVector<QStringList> _VectorIndexes);
 private:
     QSqlDatabase _Database;
     QThreadPool _pool;

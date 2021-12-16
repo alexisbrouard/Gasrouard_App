@@ -8,10 +8,9 @@ Indexer::Indexer()
 
 Indexer::~Indexer() {}
 
-bool Indexer::scanRepository(QString m_start_path)
+void Indexer::scanRepository(QString m_start_path)
 {
-    QFuture<void> future = QtConcurrent::run(&_pool, [this,m_start_path]() {
-
+    QFuture<void> future = QtConcurrent::run(&_pool, [this, m_start_path]() {
         QStringList temp;
 
         QDir dir(m_start_path);
@@ -48,7 +47,6 @@ bool Indexer::scanRepository(QString m_start_path)
         }
         sendDatabase();
     });
-    return false;
 }
 
 void Indexer::sendDatabase()
