@@ -11,6 +11,7 @@
 #include <QStringList>
 #include <QFileInfo>
 #include <QDebug>
+#include <QMap>
 
 /* Commands Imports */
 #include "commandfactory.h"
@@ -31,14 +32,23 @@ public:
     bool isOperator(QString const &str);
     bool isWord(QString const& str);
     bool isPath(QString const& str);
+    bool isComa(QString const& str);
+    bool isSeparator(QString const& str);
+    bool isExtension(QString const& str);
+    bool isDate(QString const& str);
+    bool isSize(QString const& str);
+    bool isType(QString const& str);
+    bool isParamsCompare(QString const &origin, QString const &in);
 
     /* States */
-    Flags   isFlag(QString const& str);
+    Options   isFlag(QString const& str);
     Actions isAction(QString const& str);
     Options isOption(QString const& str);
 
     /* Overall */
     void    manageUserInput(QString userInput);
+    void    fillArgsMap(QString userInput);
+    void    checkState(Options previous, Options next, bool condition);
     Flags   getFlag();
     Options getOption();
     Actions getAction();
@@ -48,6 +58,7 @@ private:
     Flags _currentFlag;
     Actions _currentAction;
     Options _currentOption;
+    QMap<Options, QStringList> _argsMap;
 };
 
 #endif // STATEMACHINE_H
