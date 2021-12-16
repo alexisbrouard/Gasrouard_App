@@ -32,8 +32,9 @@ void Statemachine::manageUserInput(QString userInput)
             default :
                 break;
         }
-        _factory->execute(_currentAction, _currentFlag, _currentOption);
     }
+    bool command_ret = _factory->execute(_currentFlag, _currentOption);
+    command_ret ? qDebug() << "Command Success" : qDebug() << "Command Failure";
 }
 
 bool Statemachine::isNumber(QString const &str)

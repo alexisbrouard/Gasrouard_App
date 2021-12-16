@@ -8,7 +8,7 @@ class Index_cmd : public CommandFactory
 {
 public:
     Index_cmd();
-    bool execute(Actions, Flags, Options);
+    bool execute(Flags, Options);
 };
 
 #endif // INDEX_CMD_H

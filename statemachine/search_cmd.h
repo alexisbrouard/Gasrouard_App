@@ -8,7 +8,7 @@ class Search_cmd : public CommandFactory
 {
 public:
     Search_cmd();
-    bool execute(Actions, Flags, Options);
+    bool execute(Flags, Options);
 };
 
 #endif // SEARCH_CMD_H

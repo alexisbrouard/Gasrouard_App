@@ -8,7 +8,7 @@ class CommandFactory
 {
 public:
     CommandFactory();
-    virtual bool execute(Actions, Flags, Options);
+    virtual bool execute(Flags, Options);
 };
 
 #endif // COMMANDFACTORY_H

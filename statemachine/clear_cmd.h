@@ -8,7 +8,7 @@ class Clear_cmd : public CommandFactory
 {
 public:
     Clear_cmd();
-    bool execute(Actions, Flags, Options);
+    bool execute(Flags, Options);
 };
 
 #endif // CLEAR_CMD_H

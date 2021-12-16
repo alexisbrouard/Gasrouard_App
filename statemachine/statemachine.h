@@ -10,6 +10,7 @@
 #include <QString>
 #include <QStringList>
 #include <QFileInfo>
+#include <QDebug>
 
 /* Commands Imports */
 #include "commandfactory.h"
