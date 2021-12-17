@@ -32,15 +32,20 @@ void Indexer::scanRepository(QString m_start_path)
             }
             else
             {
-                temp.append("NO EXTENSION");
+                if(!it.fileInfo().isDir())
+                {
+                    temp.append("NO EXTENSION");
+                }
             }
             //Size
             temp.append(QString::number(it.fileInfo().size()));
-            //Date
-            temp.append(it.fileInfo().lastModified().toString());
+            //Date création
+            temp.append(it.fileInfo().birthTime().date().toString());
+            //Date modif
+            temp.append(it.fileInfo().lastModified().date().toString());
             //Status
             temp.append("UNDEFINED");
-            if(it.fileInfo().fileName() != ".." && it.fileInfo().fileName() != ".")
+            if(!it.fileInfo().isDir())
             {
                 _vectorIndexes.append(temp);
             }

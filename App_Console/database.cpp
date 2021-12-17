@@ -29,6 +29,7 @@ void Database::setupDB()
                          "name         STRING,"
                          "suffix       STRING,"
                          "size         STRING,"
+                         "creation     DATE,"
                          "modified     DATE,"
                          "status       STRING"
                          ")";
@@ -49,11 +50,11 @@ void Database::addDatabase(QVector<QStringList> _vectorIndexes)
         query.exec("PRAGMA synchronous = normal");
         query.exec("pragma mmap_size = 30000000000");
         query.exec("PRAGMA journal_mode = wal");
-        query.prepare("INSERT INTO files(path, name, suffix, size, modified, status) VALUES(?, ?, ?, ?, ?, ?)");
+        query.prepare("INSERT INTO files(path, name, suffix, size, creation, modified, status) VALUES(?, ?, ?, ?, ?, ?, ?)");
 
         for(int i = 0; i< _vectorIndexes.size(); i++)
         {
-            for(int j = 0; j <= 5; j++)
+            for(int j = 0; j <= 6; j++)
             {
                 query.bindValue(j,_vectorIndexes.at(i).at(j));
             }
