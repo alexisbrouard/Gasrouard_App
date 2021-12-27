@@ -12,6 +12,7 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QMap>
+#include <QDate>
 
 /* Commands Imports */
 #include "commandfactory.h"
@@ -48,17 +49,16 @@ public:
     /* Overall */
     void    manageUserInput(QString userInput);
     void    fillArgsMap(QString userInput);
-    void    checkState(Options previous, Options next, bool condition);
-    Flags   getFlag();
+    void    checkState(Options previous, Options next, bool condition, QString const &in);
     Options getOption();
     Actions getAction();
 
 private:
     CommandFactory *_factory;
-    Flags _currentFlag;
+    //Flags _currentFlag;
     Actions _currentAction;
     Options _currentOption;
-    QMap<Options, QStringList> _argsMap;
+    QMap<Options, QString> _argsMap;
 };
 
 #endif // STATEMACHINE_H

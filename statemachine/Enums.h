@@ -8,18 +8,17 @@ enum Actions {
     GET         = 3,
     SEARCH      = 4,
     INDEXER     = 5,
-    UNDEFINED   = 6
-};
-
-enum Flags {
+    NOTFOUND    = 6
 };
 
 enum Options {
+    /* FLAGS */
     WHITELIST,
     BLACKLIST,
     FILTERS,
     SKIPPED_FILTERS,
-    UNDEFINED2,
+
+    /*SEARCH OPTIONS*/
     LAST_MODIFIED,
     DATE_CREATED,
     SIZE,
@@ -27,19 +26,25 @@ enum Options {
     MIN_SIZE ,
     EXTENSION,
     TYPE,
+    AND,
+    COMA,
+
+    /* OVERALL */
     WORD,
     NUMBER,
-    AND,
     AWAITING,
     ENDING,
-    COMA,
-    UNDEFINED3,
+    UNDEFINED,
+
+    /* ACTIONS */
     ADD_OPT,
     PUSH_OPT,
     CLEAR_OPT,
     GET_OPT,
     SEARCH_OPT,
     INDEXER_OPT,
+
+    /* MODES */
     INITIAL,
     START,
     STOP,

@@ -2,25 +2,26 @@
 
 Get_cmd::Get_cmd() : CommandFactory()
 {
-
 }
 
-bool Get_cmd::execute(Flags currentFlag, Options currentOption)
+bool Get_cmd::execute(QMap<Options, QString> args)
 {
     bool res = false;
 
-    switch (currentFlag) {
-        case Flags::BLACKLIST :
-            res = handleBlackList(currentOption);
+    Options currentOption = getKey(args, "FLAG");
+
+    switch (currentOption) {
+        case BLACKLIST :
+            res = handleBlackList(args);
             break;
-        case Flags::FILTERS :
-            res = handleFilters(currentOption);
+        case FILTERS :
+            res = handleFilters(args);
             break;
-        case Flags::SKIPPED_FILTERS :
-            res = handleSkippedFilters(currentOption);
+        case SKIPPED_FILTERS :
+            res = handleSkippedFilters(args);
             break;
-        case Flags::WHITELIST :
-            res = handleWhiteList(currentOption);
+        case WHITELIST :
+            res = handleWhiteList(args);
             break;
         default:
             res = false;
@@ -29,14 +30,38 @@ bool Get_cmd::execute(Flags currentFlag, Options currentOption)
     return res;
 }
 
-bool Get_cmd::handleBlackList(Options currentOption)
+Options Get_cmd::getKey(const QMap<Options, QString> &map, const QString &value)
+{
+    QMapIterator<Options, QString> i(map);
+    while (i.hasNext()) {
+        i.next();
+        if (i.value() == value)
+        return i.key();
+    }
+    return (Options::UNDEFINED);
+}
+
+QString Get_cmd::getValue(const QMap<Options, QString> &map, Options searchedOption)
+{
+    auto it = map.find(searchedOption);
+    return it.value();
+}
+
+bool Get_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKey)
+{
+    if (map.find(searchedKey) == map.end())
+        return false;
+    return true;
+}
+
+bool Get_cmd::handleBlackList(const QMap<Options, QString> args)
 {}
 
-bool Get_cmd::handleFilters(Options currentOption)
+bool Get_cmd::handleFilters(const QMap<Options, QString> args)
 {}
 
-bool Get_cmd::handleSkippedFilters(Options currentOption)
+bool Get_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 {}
 
-bool Get_cmd::handleWhiteList(Options currentOption)
+bool Get_cmd::handleWhiteList(const QMap<Options, QString> args)
 {}
