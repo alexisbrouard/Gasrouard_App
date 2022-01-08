@@ -12,6 +12,11 @@ public:
     Options getKey(const QMap<Options, QString> &map, const QString &value);
     QString getValue(const QMap<Options, QString> &map, Options searchedOption);
     bool isKeyPresent(const QMap<Options, QString> &map, Options searchedKey);
+
+    bool handleBlackList(const QMap<Options, QString> args);
+    bool handleFilters(const QMap<Options, QString> args);
+    bool handleSkippedFilters(const QMap<Options, QString> args);
+    bool handleWhiteList(const QMap<Options, QString> args);
 };
 
 #endif // PUSH_CMD_H

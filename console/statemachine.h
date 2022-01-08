@@ -2,7 +2,6 @@
 #define STATEMACHINE_H
 
 /* Global Imports */
-#include "statemachine_global.h"
 #include "Enums.h"
 
 /* System Imports */
@@ -13,6 +12,7 @@
 #include <QDebug>
 #include <QMap>
 #include <QDate>
+#include <QDir>
 
 /* Commands Imports */
 #include "commandfactory.h"
@@ -23,7 +23,7 @@
 #include "search_cmd.h"
 #include "index_cmd.h"
 
-class STATEMACHINE_EXPORT Statemachine
+class Statemachine
 {
 public:
     Statemachine();
@@ -40,23 +40,20 @@ public:
     bool isSize(QString const& str);
     bool isType(QString const& str);
     bool isParamsCompare(QString const &origin, QString const &in);
+    bool isValidPath(QString const &str);
 
     /* States */
-    Options   isFlag(QString const& str);
-    Actions isAction(QString const& str);
     Options isOption(QString const& str);
+    Options getOption();
+    Options getKey(const QMap<Options, QString> &map, const QString &value);
 
     /* Overall */
     void    manageUserInput(QString userInput);
     void    fillArgsMap(QString userInput);
     void    checkState(Options previous, Options next, bool condition, QString const &in);
-    Options getOption();
-    Actions getAction();
 
 private:
     CommandFactory *_factory;
-    //Flags _currentFlag;
-    Actions _currentAction;
     Options _currentOption;
     QMap<Options, QString> _argsMap;
 };

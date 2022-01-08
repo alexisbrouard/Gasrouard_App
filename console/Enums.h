@@ -1,22 +1,22 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
-enum Actions {
-    ADD         = 0,
-    PUSH        = 1,
-    CLEAR       = 2,
-    GET         = 3,
-    SEARCH      = 4,
-    INDEXER     = 5,
-    NOTFOUND    = 6
-};
-
 enum Options {
+    /* MODES */
+    INITIAL,
+    START,
+    STOP,
+    PAUSE,
+    RESUME,
+    STATE,
+    STATUS,
+
     /* FLAGS */
     WHITELIST,
     BLACKLIST,
     FILTERS,
     SKIPPED_FILTERS,
+    FOLDER_PATH,
 
     /*SEARCH OPTIONS*/
     LAST_MODIFIED,
@@ -35,23 +35,15 @@ enum Options {
     AWAITING,
     ENDING,
     UNDEFINED,
+    DONE,
 
     /* ACTIONS */
-    ADD_OPT,
-    PUSH_OPT,
-    CLEAR_OPT,
-    GET_OPT,
-    SEARCH_OPT,
-    INDEXER_OPT,
-
-    /* MODES */
-    INITIAL,
-    START,
-    STOP,
-    PAUSE,
-    RESUME,
-    STATE,
-    STATUS
+    ADD,
+    PUSH,
+    CLEAR,
+    GET,
+    SEARCH,
+    INDEXER
 };
 
 #endif // ENUMS_H

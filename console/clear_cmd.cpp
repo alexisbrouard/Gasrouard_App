@@ -27,3 +27,10 @@ QString Clear_cmd::getValue(const QMap<Options, QString> &map, Options searchedO
     auto it = map.find(searchedOption);
     return it.value();
 }
+
+bool Clear_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKey)
+{
+    if (map.find(searchedKey) == map.end())
+        return false;
+    return true;
+}

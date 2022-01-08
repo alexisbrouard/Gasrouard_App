@@ -21,3 +21,10 @@ QString Search_cmd::getValue(const QMap<Options, QString> &map, Options searched
     auto it = map.find(searchedOption);
     return it.value();
 }
+
+bool Search_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKey)
+{
+    if (map.find(searchedKey) == map.end())
+        return false;
+    return true;
+}
