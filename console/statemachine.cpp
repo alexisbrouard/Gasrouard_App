@@ -23,7 +23,6 @@ void Statemachine::manageUserInput(QString userInput)
         qDebug() << "Map empty";
     /*End of temp Action */
 
-
     Options currentAction = getKey(_argsMap, "ACTION");
 
     qDebug() << "current action :" << currentAction;
@@ -59,6 +58,9 @@ void Statemachine::manageUserInput(QString userInput)
 /*
  * Add must be done the folders already on the DB, must retrieve them if check is here (currently no, must check in cmd)
 */
+/*
+ * TO make the push work must create multiple options to hold all folders (Folder_path1, folder_path2, ect..)
+*/
 
 void Statemachine::fillArgsMap(QString userInput)
 {
@@ -82,10 +84,10 @@ void Statemachine::fillArgsMap(QString userInput)
 
                                 /* GET */
         checkState(INITIAL, GET, isParamsCompare(filteredInput[i], "GET"), "ACTION");
-        checkState(ADD, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
-        checkState(ADD, BLACKLIST, isParamsCompare(filteredInput[i], "BLACKLIST"), "FLAG");
-        checkState(ADD, FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(ADD, SKIPPED_FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(GET, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
+        checkState(GET, BLACKLIST, isParamsCompare(filteredInput[i], "BLACKLIST"), "FLAG");
+        checkState(GET, FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(GET, SKIPPED_FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
 
                                 /* INDEXER */
         checkState(INITIAL, INDEXER, isParamsCompare(filteredInput[i], "INDEXER"), "ACTION");
@@ -150,7 +152,7 @@ bool Statemachine::isParamsCompare(QString const &origin, QString const &in)
 
 void Statemachine::checkState(Options previous, Options next, bool condition, QString const &str)
 {
-    qDebug() << "previous: " << previous << "  | currentOption: " << _currentOption << " | condition: " << condition;
+    //qDebug() << "previous: " << previous << "  | currentOption: " << _currentOption << " | condition: " << condition;
     if (previous == _currentOption && condition == true) {
         _currentOption = next;
         qDebug() << "Map gonna be filled with: " << next;
