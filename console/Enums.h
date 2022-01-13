@@ -8,7 +8,6 @@ enum Options {
     STOP,
     PAUSE,
     RESUME,
-    STATE,
     STATUS,
 
     /* FLAGS */

@@ -91,11 +91,11 @@ void Statemachine::fillArgsMap(QString userInput)
 
                                 /* INDEXER */
         checkState(INITIAL, INDEXER, isParamsCompare(filteredInput[i], "INDEXER"), "ACTION");
-        checkState(INDEXER, RESUME, isParamsCompare(filteredInput[i], "RESUME" ), "RESUME");
-        checkState(INDEXER, START, isParamsCompare(filteredInput[i], "START" ), "START");
-        checkState(INDEXER, STATUS, isParamsCompare(filteredInput[i], "STATUS" ), "STATUS");
-        checkState(INDEXER, STOP, isParamsCompare(filteredInput[i], "STOP" ), "STOP");
-        checkState(INDEXER, PAUSE, isParamsCompare(filteredInput[i], "PAUSE" ), "PAUSE");
+        checkState(INDEXER, RESUME, isParamsCompare(filteredInput[i], "RESUME" ), "FLAG");
+        checkState(INDEXER, START, isParamsCompare(filteredInput[i], "START" ), "FLAG");
+        checkState(INDEXER, STATUS, isParamsCompare(filteredInput[i], "STATUS" ), "FLAG");
+        checkState(INDEXER, STOP, isParamsCompare(filteredInput[i], "STOP" ), "FLAG");
+        checkState(INDEXER, PAUSE, isParamsCompare(filteredInput[i], "PAUSE" ), "FLAG");
 
                                 /* PUSH */
         checkState(INITIAL, PUSH, isParamsCompare(filteredInput[i], "PUSH"), "ACTION");
@@ -141,11 +141,10 @@ void Statemachine::fillArgsMap(QString userInput)
 
 bool Statemachine::isParamsCompare(QString const &origin, QString const &in)
 {
-    qDebug() << origin << " : " << in;
+    //qDebug() << origin << " : " << in;
     int res = QString::compare(origin, in, Qt::CaseInsensitive);
     if (res == 0) {
         return true;
-       qDebug() << origin << " : " << in;
     }
     return false;
 }
@@ -155,7 +154,7 @@ void Statemachine::checkState(Options previous, Options next, bool condition, QS
     //qDebug() << "previous: " << previous << "  | currentOption: " << _currentOption << " | condition: " << condition;
     if (previous == _currentOption && condition == true) {
         _currentOption = next;
-        qDebug() << "Map gonna be filled with: " << next;
+        //qDebug() << "Map gonna be filled with: " << next;
         _argsMap.insert(next, str);
     }
 }
