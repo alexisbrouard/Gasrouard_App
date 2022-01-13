@@ -66,11 +66,11 @@ void Statemachine::fillArgsMap(QString userInput)
 {
     QStringList filteredInput = userInput.split(" ");
     bool endOPT = false;
+
     for (int i = 0, lastOPT = filteredInput.size() - 1; i < filteredInput.size(); i++) {
         /* Check for last OPT */
         if (i == lastOPT)
             endOPT = true;
-
                                  /* ADD */
         checkState(INITIAL, ADD, isParamsCompare(filteredInput[i], "ADD"), "ACTION");
         checkState(ADD, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
@@ -104,15 +104,15 @@ void Statemachine::fillArgsMap(QString userInput)
         checkState(PUSH, FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
         checkState(PUSH, SKIPPED_FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
         //Getting the folders
-        checkState(WHITELIST, FOLDER_PATH, isWord(filteredInput[i]), filteredInput[i]);
-        checkState(BLACKLIST, FOLDER_PATH, isWord(filteredInput[i]), filteredInput[i]);
-        checkState(FILTERS, FOLDER_PATH, isWord(filteredInput[i]), filteredInput[i]);
-        checkState(SKIPPED_FILTERS, FOLDER_PATH, isWord(filteredInput[i]), filteredInput[i]);
+        checkState(WHITELIST, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(BLACKLIST, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(FILTERS, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(SKIPPED_FILTERS, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
         // Multiple folders, not gonna work prob cuz map is being used
-        checkState(FOLDER_PATH, FOLDER_PATH, isWord(filteredInput[i]), filteredInput[i]);
-        checkState(FOLDER_PATH, FOLDER_PATH, isWord(filteredInput[i]), filteredInput[i]);
-        checkState(FOLDER_PATH, FOLDER_PATH, isWord(filteredInput[i]), filteredInput[i]);
-        checkState(FOLDER_PATH, FOLDER_PATH, isWord(filteredInput[i]), filteredInput[i]);
+        checkState(FOLDER_PATH, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(FOLDER_PATH, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(FOLDER_PATH, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(FOLDER_PATH, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
         // Getting the end
         checkState(FOLDER_PATH, DONE, isParamsCompare(filteredInput[i], "DONE"), "DONE");
         checkState(FOLDER_PATH, DONE, isParamsCompare(filteredInput[i], "DONE"), "DONE");
