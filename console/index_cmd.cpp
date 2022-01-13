@@ -1,6 +1,8 @@
 #include "index_cmd.h"
 
-Index_cmd::Index_cmd() : CommandFactory() {}
+Index_cmd::Index_cmd() : CommandFactory()
+{
+}
 
 bool Index_cmd::execute(QMap<Options, QString> args)
 {
@@ -52,8 +54,8 @@ QString Index_cmd::getValue(const QMap<Options, QString> &map, Options searchedO
 bool Index_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKey)
 {
     if (map.find(searchedKey) == map.end())
-        return false;
-    return true;
+        return true;
+    return false;
 }
 
 bool Index_cmd::handleResume(const QMap<Options, QString> args)

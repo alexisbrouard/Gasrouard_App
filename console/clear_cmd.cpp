@@ -2,14 +2,34 @@
 
 Clear_cmd::Clear_cmd() : CommandFactory()
 {
-
 }
 
 bool Clear_cmd::execute(QMap<Options, QString> args)
 {
-    return false;
-}
+    bool res = FAILURE;
 
+    Options currentOption = getKey(args, "FLAG");
+    qDebug() << "FLAG: " << currentOption << "| CMD : CLEAR" ;
+
+    switch (currentOption) {
+        case BLACKLIST :
+            res = handleBlackList(args);
+            break;
+        case FILTERS :
+            res = handleFilters(args);
+            break;
+        case SKIPPED_FILTERS :
+            res = handleSkippedFilters(args);
+            break;
+        case WHITELIST :
+            res = handleWhiteList(args);
+            break;
+        default:
+            return FAILURE;
+            break;
+    }
+    return res;
+}
 
 Options Clear_cmd::getKey(const QMap<Options, QString> &map, const QString &value)
 {
@@ -31,6 +51,66 @@ QString Clear_cmd::getValue(const QMap<Options, QString> &map, Options searchedO
 bool Clear_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKey)
 {
     if (map.find(searchedKey) == map.end())
-        return false;
-    return true;
+        return FAILURE;
+    return SUCCESS;
+}
+
+bool Clear_cmd::handleBlackList(const QMap<Options, QString> args)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM files WHERE status = 'BLACKLIST'");
+    query.exec();
+
+    //Handle Error
+    if(query.lastError().isValid())
+    {
+        qWarning() << query.lastError().text();
+        return FAILURE;
+    }
+    return SUCCESS;
+}
+
+bool Clear_cmd::handleFilters(const QMap<Options, QString> args)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM files WHERE status = 'FILTERS'");
+    query.exec();
+
+    //Handle Error
+    if(query.lastError().isValid())
+    {
+        qWarning() << query.lastError().text();
+        return FAILURE;
+    }
+    return SUCCESS;
+}
+
+bool Clear_cmd::handleSkippedFilters(const QMap<Options, QString> args)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM files WHERE status = 'SKIPPED_FILTERS'");
+    query.exec();
+
+    //Handle Error
+    if(query.lastError().isValid())
+    {
+        qWarning() << query.lastError().text();
+        return FAILURE;
+    }
+    return SUCCESS;
+}
+
+bool Clear_cmd::handleWhiteList(const QMap<Options, QString> args)
+{
+    QSqlQuery query;
+    query.prepare("DELETE FROM files WHERE status = 'WHITELIST'");
+    query.exec();
+
+    //Handle Error
+    if(query.lastError().isValid())
+    {
+        qWarning() << query.lastError().text();
+        return FAILURE;
+    }
+    return SUCCESS;
 }

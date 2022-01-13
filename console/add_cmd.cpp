@@ -2,15 +2,15 @@
 
 Add_cmd::Add_cmd() : CommandFactory()
 {
-
 }
 
 bool Add_cmd::execute(QMap<Options, QString> args)
 {
-    bool res = false;
+    bool res = FAILURE;
 
     Options currentOption = getKey(args, "FLAG");
     qDebug() << "FLAG: " << currentOption << "| CMD : ADD" ;
+
     switch (currentOption) {
         case BLACKLIST :
             res = handleBlackList(args);
@@ -25,41 +25,10 @@ bool Add_cmd::execute(QMap<Options, QString> args)
             res = handleWhiteList(args);
             break;
         default:
-            res = false;
+            return FAILURE;
             break;
     }
     return res;
-    return false;
-}
-
-bool Add_cmd::handleBlackList(const QMap<Options, QString> args)
-{
-    if (args.empty()) // useless but usefull to wipe out the fucking warning
-        return false;
-    return true;
-}
-
-bool Add_cmd::handleFilters(const QMap<Options, QString> args)
-{
-    if (args.empty())
-        return false;
-    return true;
-}
-
-bool Add_cmd::handleSkippedFilters(const QMap<Options, QString> args)
-{
-    if (args.empty())
-        return false;
-    return true;
-}
-
-bool Add_cmd::handleWhiteList(const QMap<Options, QString> args)
-{
-    if (args.empty())
-        return false;
-      qDebug() << "WHITELIST Handled";
-      qDebug() << "path to folder: " << getValue(args, FOLDER_PATH);
-      return true;
 }
 
 Options Add_cmd::getKey(const QMap<Options, QString> &map, const QString &value)
@@ -82,8 +51,66 @@ QString Add_cmd::getValue(const QMap<Options, QString> &map, Options searchedOpt
 bool Add_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKey)
 {
     if (map.find(searchedKey) == map.end())
-        return false;
-    return true;
+        return FAILURE;
+    return SUCCESS;
 }
 
+bool Add_cmd::handleBlackList(const QMap<Options, QString> args)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE files SET status = 'BLACKLIST' WHERE condition"); // UNDEFINED
+    query.exec();
 
+    //Handle Error
+    if(query.lastError().isValid())
+    {
+        qWarning() << query.lastError().text();
+        return FAILURE;
+    }
+    return SUCCESS;
+}
+
+bool Add_cmd::handleFilters(const QMap<Options, QString> args)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE files SET status = 'FILTERS' WHERE condition");
+    query.exec();
+
+    //Handle Error
+    if(query.lastError().isValid())
+    {
+        qWarning() << query.lastError().text();
+        return FAILURE;
+    }
+    return SUCCESS;
+}
+
+bool Add_cmd::handleSkippedFilters(const QMap<Options, QString> args)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE files SET status = 'SKIPPED_FILTERS' WHERE condition");
+    query.exec();
+
+    //Handle Error
+    if(query.lastError().isValid())
+    {
+        qWarning() << query.lastError().text();
+        return FAILURE;
+    }
+    return SUCCESS;
+}
+
+bool Add_cmd::handleWhiteList(const QMap<Options, QString> args)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE files SET status = 'WHITELIST' WHERE condition");
+    query.exec();
+
+    //Handle Error
+    if(query.lastError().isValid())
+    {
+        qWarning() << query.lastError().text();
+        return FAILURE;
+    }
+    return SUCCESS;
+}
