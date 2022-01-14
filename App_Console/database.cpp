@@ -31,7 +31,8 @@ void Database::setupDB()
                          "size         STRING,"
                          "creation     DATE,"
                          "modified     DATE,"
-                         "status       STRING"
+                         "status       STRING,"
+                         "UNIQUE(path)"
                          ")";
     QSqlQuery query;
     query.exec(tblIndexes);
@@ -50,7 +51,7 @@ void Database::addDatabase(QVector<QStringList> _vectorIndexes)
         query.exec("PRAGMA synchronous = normal");
         query.exec("pragma mmap_size = 30000000000");
         query.exec("PRAGMA journal_mode = wal");
-        query.prepare("INSERT INTO files(path, name, suffix, size, creation, modified, status) VALUES(?, ?, ?, ?, ?, ?, ?)");
+        query.prepare("INSERT OR IGNORE INTO files(path, name, suffix, size, creation, modified, status) VALUES(?, ?, ?, ?, ?, ?, ?)");
 
         for(int i = 0; i< _vectorIndexes.size(); i++)
         {

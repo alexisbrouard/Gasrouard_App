@@ -9,7 +9,8 @@ int main(int argc, char *argv[])
 
     Indexer indexer;
     QTimer timer;
-    indexer.scanRepository("C:/Users");
+    indexer.scanRepository("F:/");
 
     return a.exec();
 }
+
