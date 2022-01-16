@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     //obj.manageUserInput("GET WHITELIST"); // works
 
-    //obj.manageUserInput("ADD WHITELIST toto.txt"); // works
+    //obj.manageUserInput("ADD FILTERS .txt"); // works
 
     //obj.manageUserInput("PUSH WHITELIST toto.txt DONE"); // works, but only for one file
 

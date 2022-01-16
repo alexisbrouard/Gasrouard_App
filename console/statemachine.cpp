@@ -97,28 +97,6 @@ void Statemachine::fillArgsMap(QString userInput)
         checkState(INDEXER, STOP, isParamsCompare(filteredInput[i], "STOP" ), "FLAG");
         checkState(INDEXER, PAUSE, isParamsCompare(filteredInput[i], "PAUSE" ), "FLAG");
 
-                                /* PUSH */
-        checkState(INITIAL, PUSH, isParamsCompare(filteredInput[i], "PUSH"), "ACTION");
-        checkState(PUSH, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
-        checkState(PUSH, BLACKLIST, isParamsCompare(filteredInput[i], "BLACKLIST"), "FLAG");
-        checkState(PUSH, FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(PUSH, SKIPPED_FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
-        //Getting the folders
-        checkState(WHITELIST, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(BLACKLIST, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(FILTERS, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(SKIPPED_FILTERS, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
-        // Multiple folders, not gonna work prob cuz map is being used
-        checkState(FOLDER_PATH, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(FOLDER_PATH, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(FOLDER_PATH, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(FOLDER_PATH, FOLDER_PATH, isExtension(filteredInput[i]), filteredInput[i]);
-        // Getting the end
-        checkState(FOLDER_PATH, DONE, isParamsCompare(filteredInput[i], "DONE"), "DONE");
-        checkState(FOLDER_PATH, DONE, isParamsCompare(filteredInput[i], "DONE"), "DONE");
-        checkState(FOLDER_PATH, DONE, isParamsCompare(filteredInput[i], "DONE"), "DONE");
-        checkState(FOLDER_PATH, DONE, isParamsCompare(filteredInput[i], "DONE"), "DONE");
-
                                 /* CLEAR */
         checkState(INITIAL, CLEAR, isParamsCompare(filteredInput[i], "CLEAR" ), "ACTION");
         checkState(CLEAR, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
@@ -126,10 +104,30 @@ void Statemachine::fillArgsMap(QString userInput)
         checkState(CLEAR, SKIPPED_FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
         checkState(CLEAR, FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
 
-                            /* Search */
-        checkState(INITIAL, SEARCH, isParamsCompare(filteredInput[i], "SEARCH"), "ACTION");
+        /*
+         * SEARCH toto LAST_MODIFIED:BETWEEN 2 days and 3 days CREATED:31/12/2020 MAX_SIZE:10M MIN_SIZE:1M SIZE:BETWEEN 10M AND 20M EXT:txt,doc,xlsx "
+                        "TYPE:image OR text"
+        */
+
+                                /* Search */
+
         checkState(SEARCH, WORD, isWord(filteredInput[i]), filteredInput[i]);
+        checkState(INITIAL, SEARCH, isParamsCompare(filteredInput[i], "SEARCH"), "ACTION");
         checkState(WORD, LAST_MODIFIED, isDate(filteredInput[i]), filteredInput[i]);
+        checkState(LAST_MODIFIED, FIRST_NUM, isNumber(filteredInput[i]), filteredInput[i]);
+        checkState(FIRST_NUM, FIRST_DATE, isParamsCompare(filteredInput[i], "days"), filteredInput[i]);
+        checkState(FIRST_DATE, AND_ONE, isParamsCompare(filteredInput[i], "and"), filteredInput[i]);
+        checkState(AND_ONE, SECOND_NUM, isNumber(filteredInput[i]), filteredInput[i]);
+        checkState(SECOND_NUM, SECOND_DATE, isParamsCompare(filteredInput[i], "days"), filteredInput[i]);
+        checkState(SECOND_DATE, DATE_CREATED, isDate(filteredInput[i]), filteredInput[i]);
+        checkState(DATE_CREATED, MAX_SIZE, isSize(filteredInput[i]), filteredInput[i]);
+        checkState(MAX_SIZE, MIN_SIZE, isSize(filteredInput[i]), filteredInput[i]);
+        checkState(MIN_SIZE, SIZE, isSize(filteredInput[i]), filteredInput[i]);
+        checkState(SIZE, SIZE_NUM_ONE, isSize(filteredInput[i]), filteredInput[i]);
+        checkState(SIZE_NUM_ONE, AND_TWO, isParamsCompare(filteredInput[i], "and"), filteredInput[i]);
+        checkState(AND_TWO, SIZE_NUM_TWO, isParamsCompare(filteredInput[i], "and"), filteredInput[i]);
+        checkState(SIZE_NUM_TWO, EXTENSION, isExtension(filteredInput[i]), filteredInput[i]);
+        // Other beginnings
         checkState(WORD, DATE_CREATED, isDate(filteredInput[i]), filteredInput[i]);
         checkState(WORD, MAX_SIZE, isSize(filteredInput[i]), filteredInput[i]);
         checkState(WORD, MIN_SIZE, isSize(filteredInput[i]), filteredInput[i]);
@@ -154,7 +152,6 @@ void Statemachine::checkState(Options previous, Options next, bool condition, QS
     //qDebug() << "previous: " << previous << "  | currentOption: " << _currentOption << " | condition: " << condition;
     if (previous == _currentOption && condition == true) {
         _currentOption = next;
-        //qDebug() << "Map gonna be filled with: " << next;
         _argsMap.insert(next, str);
     }
 }
@@ -180,18 +177,15 @@ bool Statemachine::isSize(QString const &str)
 {
     //MAX_SIZE:10M
     //MIN_SIZE:1M
-    return (str.contains('K') || str.contains('M') || str.contains('G'));
+    return (str.contains('K') || str.contains('M') || str.contains('G') || str.contains("SIZE"));
 }
 
 bool Statemachine::isType(QString const &str)
 {
     QStringList extList = {"image", "text", "exe"};
-    QString temp;
 
-    for (int i = 0; i < extList.size(); i++) {
-        if (str.contains(temp))
-            return true;
-    }
+    if (extList.contains(str))
+        return true;
     return false;
 }
 
