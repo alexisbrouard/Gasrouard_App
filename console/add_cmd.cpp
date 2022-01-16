@@ -58,7 +58,8 @@ bool Add_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKe
 bool Add_cmd::handleBlackList(const QMap<Options, QString> args)
 {
     QSqlQuery query;
-    query.prepare("UPDATE files SET status = 'BLACKLIST' WHERE condition"); // UNDEFINED
+    QString temp_filename = getValue(args, FOLDER_PATH);
+    query.prepare("UPDATE files SET status = 'BLACKLIST' WHERE name = '" + temp_filename + "'"); // UNDEFINED
     query.exec();
 
     //Handle Error
@@ -73,7 +74,8 @@ bool Add_cmd::handleBlackList(const QMap<Options, QString> args)
 bool Add_cmd::handleFilters(const QMap<Options, QString> args)
 {
     QSqlQuery query;
-    query.prepare("UPDATE files SET status = 'FILTERS' WHERE condition");
+    QString temp_filename = getValue(args, FOLDER_PATH);
+    query.prepare("UPDATE files SET status = 'FILTERS' WHERE name = '" + temp_filename + "'");
     query.exec();
 
     //Handle Error
@@ -88,7 +90,8 @@ bool Add_cmd::handleFilters(const QMap<Options, QString> args)
 bool Add_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 {
     QSqlQuery query;
-    query.prepare("UPDATE files SET status = 'SKIPPED_FILTERS' WHERE condition");
+    QString temp_filename = getValue(args, FOLDER_PATH);
+    query.prepare("UPDATE files SET status = 'SKIPPED_FILTERS' WHERE name = '" + temp_filename + "'");
     query.exec();
 
     //Handle Error
@@ -103,7 +106,8 @@ bool Add_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 bool Add_cmd::handleWhiteList(const QMap<Options, QString> args)
 {
     QSqlQuery query;
-    query.prepare("UPDATE files SET status = 'WHITELIST' WHERE condition");
+    QString temp_filename = getValue(args, FOLDER_PATH);
+    query.prepare("UPDATE files SET status = 'WHITELIST' WHERE name = '" + temp_filename + "'");
     query.exec();
 
     //Handle Error
