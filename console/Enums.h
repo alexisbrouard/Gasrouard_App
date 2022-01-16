@@ -25,8 +25,15 @@ enum Options {
     MIN_SIZE ,
     EXTENSION,
     TYPE,
-    AND,
+    AND_ONE,
+    AND_TWO,
     COMA,
+    FIRST_NUM,
+    SECOND_NUM,
+    FIRST_DATE,
+    SECOND_DATE,
+    SIZE_NUM_ONE,
+    SIZE_NUM_TWO,
 
     /* OVERALL */
     WORD,
