@@ -1,6 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    Indexer \
-    console \
+    App_Console \
     statemachine
