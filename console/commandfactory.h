@@ -1,10 +1,16 @@
 #ifndef COMMANDFACTORY_H
 #define COMMANDFACTORY_H
 
+/* Define */
+#define SUCCESS true
+#define FAILURE false
+
 /* System Imports */
 #include <QString>
 #include <QMap>
 #include <QDebug>
+#include <QSqlQuery>
+#include <QSqlError>
 
 /* Global Imports */
 #include "Enums.h"
