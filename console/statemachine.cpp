@@ -7,9 +7,7 @@ Statemachine::Statemachine()
 
 void Statemachine::manageUserInput(QString userInput)
 {
-    qDebug() << "Enterin into Management";
     qDebug() << "user input: " << userInput;
-
     fillArgsMap(userInput);
 
     /*Temp Print*/
@@ -21,7 +19,6 @@ void Statemachine::manageUserInput(QString userInput)
     qDebug() << "Map printed";
     if (_argsMap.isEmpty())
         qDebug() << "Map empty";
-    /*End of temp Action */
 
     Options currentAction = getKey(_argsMap, "ACTION");
 
@@ -51,8 +48,14 @@ void Statemachine::manageUserInput(QString userInput)
                 break;
         }
     }
+
+    /*Managing Outcome*/
     bool command_ret = _factory->execute(_argsMap);
     command_ret ? qDebug() << "Command Success" : qDebug() << "Command Failure";
+
+    /*Ressetting the FSM*/
+    _argsMap.clear();
+    _currentOption = Options::INITIAL;
 }
 
 /*
@@ -68,6 +71,7 @@ void Statemachine::fillArgsMap(QString userInput)
     bool endOPT = false;
 
     for (int i = 0, lastOPT = filteredInput.size() - 1; i < filteredInput.size(); i++) {
+        qDebug() << "word:" << filteredInput[i];
         /* Check for last OPT */
         if (i == lastOPT)
             endOPT = true;
@@ -139,9 +143,9 @@ void Statemachine::fillArgsMap(QString userInput)
 
 bool Statemachine::isParamsCompare(QString const &origin, QString const &in)
 {
-    //qDebug() << origin << " : " << in;
     int res = QString::compare(origin, in, Qt::CaseInsensitive);
     if (res == 0) {
+        qDebug() << "comparing:" << origin << "in: " << in;
         return true;
     }
     return false;
@@ -149,7 +153,6 @@ bool Statemachine::isParamsCompare(QString const &origin, QString const &in)
 
 void Statemachine::checkState(Options previous, Options next, bool condition, QString const &str)
 {
-    //qDebug() << "previous: " << previous << "  | currentOption: " << _currentOption << " | condition: " << condition;
     if (previous == _currentOption && condition == true) {
         _currentOption = next;
         _argsMap.insert(next, str);

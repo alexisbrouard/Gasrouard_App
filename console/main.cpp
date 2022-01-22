@@ -10,24 +10,22 @@ int main(int argc, char *argv[])
     /* Inits */
     Statemachine obj;
     Indexer indexer;
-    QTimer timer;
+    std::string line;
+    //indexer.scanRepository("C:/Users/Cameron/OneDrive/Documents/Battlefield 4");
 
-    indexer.scanRepository("C:/Users/Cameron/OneDrive/Documents/Battlefield 4");
-
-    std::cout << "finished";
-    /*while (1) {
+    while (1) {
         std::cout << "> " << std::flush;
-        std::string line;
         std::getline(std::cin, line);
         if (std::cin.eof() || line == "quit") {
-            std::cout << "Good bye!" << std::endl;
+            std::cout << "Ending the Session!" << std::endl;
             break;
         } else {
            QString qstr = QString::fromStdString(line);
            obj.manageUserInput(qstr);
         }
+        line.clear();
     }
-    return app.exec();*/
+    return app.exec();
 
 
     /* OP */
