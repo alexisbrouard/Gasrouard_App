@@ -9,7 +9,7 @@ bool Add_cmd::execute(QMap<Options, QString> args)
     bool res = FAILURE;
 
     Options currentOption = getKey(args, "FLAG");
-    qDebug() << "FLAG: " << currentOption << "| CMD : ADD" ;
+    //qDebug() << "FLAG: " << currentOption << "| CMD : ADD" ;
 
     switch (currentOption) {
         case BLACKLIST :
@@ -57,6 +57,8 @@ bool Add_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKe
 
 bool Add_cmd::handleBlackList(const QMap<Options, QString> args)
 {
+    std::cout << "Adding Blacklisted status to file" << std::endl;
+
     QSqlQuery query;
     QString temp_filename = getValue(args, FOLDER_PATH);
     query.prepare("UPDATE files SET status = 'BLACKLIST' WHERE name = '" + temp_filename + "'"); // UNDEFINED
@@ -73,6 +75,8 @@ bool Add_cmd::handleBlackList(const QMap<Options, QString> args)
 
 bool Add_cmd::handleFilters(const QMap<Options, QString> args)
 {
+    std::cout << "Adding Filters" << std::endl;
+
     QSqlQuery query;
     QString temp_filename = getValue(args, FOLDER_PATH);
     query.prepare("UPDATE files SET status = 'FILTERS' WHERE name = '" + temp_filename + "'");
@@ -89,6 +93,8 @@ bool Add_cmd::handleFilters(const QMap<Options, QString> args)
 
 bool Add_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 {
+    std::cout << "Adding Skipped Filters" << std::endl;
+
     QSqlQuery query;
     QString temp_filename = getValue(args, FOLDER_PATH);
     query.prepare("UPDATE files SET status = 'SKIPPED_FILTERS' WHERE name = '" + temp_filename + "'");
@@ -105,6 +111,8 @@ bool Add_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 
 bool Add_cmd::handleWhiteList(const QMap<Options, QString> args)
 {
+    std::cout << "Adding WhiteListed Files" << std::endl;
+
     QSqlQuery query;
     QString temp_filename = getValue(args, FOLDER_PATH);
     query.prepare("UPDATE files SET status = 'WHITELIST' WHERE name = '" + temp_filename + "'");

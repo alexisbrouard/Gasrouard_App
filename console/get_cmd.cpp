@@ -9,7 +9,6 @@ bool Get_cmd::execute(QMap<Options, QString> args)
     bool res = FAILURE;
 
     Options currentOption = getKey(args, "FLAG");
-    qDebug() << "FLAG: " << currentOption << "| CMD : GET" ;
 
     switch (currentOption) {
         case BLACKLIST :
@@ -57,6 +56,11 @@ bool Get_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKe
 
 bool Get_cmd::handleBlackList(const QMap<Options, QString> args)
 {
+    if (args.empty())
+        return FAILURE;
+
+    std::cout << "Getting All files BlackListed" << std::endl;
+
     QSqlQuery query;
     query.prepare("SELECT * FROM files WHERE status = 'BLACKLIST'");
     query.exec();
@@ -72,6 +76,11 @@ bool Get_cmd::handleBlackList(const QMap<Options, QString> args)
 
 bool Get_cmd::handleFilters(const QMap<Options, QString> args)
 {
+    std::cout << "Getting Filters Files" << std::endl;
+
+    if (args.empty())
+        return FAILURE;
+
     QSqlQuery query;
     query.prepare("SELECT * FROM files WHERE status = 'FILTERS'");
     query.exec();
@@ -87,6 +96,11 @@ bool Get_cmd::handleFilters(const QMap<Options, QString> args)
 
 bool Get_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 {
+    std::cout << "Getting All Skipped Filters Files" << std::endl;
+
+    if (args.empty())
+        return FAILURE;
+
     QSqlQuery query;
     query.prepare("SELECT * FROM files WHERE status = 'SKIPPED_FILTERS'");
     query.exec();
@@ -102,6 +116,13 @@ bool Get_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 
 bool Get_cmd::handleWhiteList(const QMap<Options, QString> args)
 {
+    std::cout << "Getting All files WhiteListed" << std::endl;
+
+    if (args.empty())
+        return FAILURE;
+    if (args.empty())
+        return FAILURE;
+
     QSqlQuery query;
     query.prepare("SELECT * FROM files WHERE status = 'WHITELIST'");
     query.exec();

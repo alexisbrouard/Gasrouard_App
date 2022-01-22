@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <iostream>
 
 /* Global Imports */
 #include "Enums.h"

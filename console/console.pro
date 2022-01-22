@@ -1,8 +1,13 @@
 QT -= gui
-QT += sql
+
+QT += sql widgets core
+
+TEMPLATE = app
+CONFIG += console
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
+
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -17,6 +22,7 @@ SOURCES += \
         index_cmd.cpp \
         push_cmd.cpp \
         search_cmd.cpp \
+        standard_input.cpp \
         statemachine.cpp \
         database.cpp \
         indexer.cpp \
@@ -35,6 +41,7 @@ HEADERS += \
     index_cmd.h \
     push_cmd.h \
     search_cmd.h \
+    standard_input.h \
     statemachine.h \
     database.h \
     indexer.h

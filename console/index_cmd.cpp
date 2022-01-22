@@ -9,7 +9,7 @@ bool Index_cmd::execute(QMap<Options, QString> args)
     bool res = false;
 
      Options currentOption = getKey(args, "FLAG");
-     qDebug() << "FLAG: " << currentOption << "| CMD : INDEX" ;
+     //qDebug() << "FLAG: " << currentOption << "| CMD : INDEX" ;
      switch (currentOption) {
          case START:
              res = handleStart(args);
@@ -32,7 +32,6 @@ bool Index_cmd::execute(QMap<Options, QString> args)
      }
      return res;
 }
-
 
 Options Index_cmd::getKey(const QMap<Options, QString> &map, const QString &value)
 {
@@ -60,35 +59,40 @@ bool Index_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searched
 
 bool Index_cmd::handleResume(const QMap<Options, QString> args)
 {
-    if (args.empty()) // useless but usefull to wipe out the fucking warning
+    std::cout << "Resuming Indexing" << std::endl;
+    if (args.empty())
         return FAILURE;
     return SUCCESS;
 }
 
 bool Index_cmd::handleStop(const QMap<Options, QString> args)
 {
-    if (args.empty()) // useless but usefull to wipe out the fucking warning
+    std::cout << "Stopping Indexing" << std::endl;
+    if (args.empty())
         return FAILURE;
     return SUCCESS;
 }
 
 bool Index_cmd::handleStart(const QMap<Options, QString> args)
 {
-    if (args.empty()) // useless but usefull to wipe out the fucking warning
+    std::cout << "Starting Indexing" << std::endl;
+    if (args.empty())
         return FAILURE;
     return SUCCESS;
 }
 
 bool Index_cmd::handleStatus(const QMap<Options, QString> args)
 {
-    if (args.empty()) // useless but usefull to wipe out the fucking warning
+    std::cout << "Displaying Status of Indexer" << std::endl;
+    if (args.empty())
         return FAILURE;
     return SUCCESS;
 }
 
 bool Index_cmd::handlePause(const QMap<Options, QString> args)
 {
-    if (args.empty()) // useless but usefull to wipe out the fucking warning
+    std::cout << "Pausing Indexing" << std::endl;
+    if (args.empty())
         return FAILURE;
     return SUCCESS;
 }

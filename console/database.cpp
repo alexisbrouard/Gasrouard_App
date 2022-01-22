@@ -47,6 +47,8 @@ void Database::addDatabase(QVector<QStringList> _vectorIndexes)
     QFuture<void> future = QtConcurrent::run(&_pool, [this, _vectorIndexes]() {
         QSqlQuery query(_Database);
 
+        qDebug() <<"Adding to DB";
+
         query.exec("pragma temp_store = memory");
         query.exec("PRAGMA synchronous = normal");
         query.exec("pragma mmap_size = 30000000000");
