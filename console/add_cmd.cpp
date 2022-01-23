@@ -9,11 +9,13 @@ bool Add_cmd::execute(QMap<Options, QString> args)
     bool res = FAILURE;
 
     Options currentOption = getKey(args, "FLAG");
-    //qDebug() << "FLAG: " << currentOption << "| CMD : ADD" ;
 
     switch (currentOption) {
         case BLACKLIST :
             res = handleBlackList(args);
+            break;
+        case WHITELIST :
+            res = handleWhiteList(args);
             break;
         case FILTERS :
             res = handleFilters(args);
@@ -21,11 +23,7 @@ bool Add_cmd::execute(QMap<Options, QString> args)
         case SKIPPED_FILTERS :
             res = handleSkippedFilters(args);
             break;
-        case WHITELIST :
-            res = handleWhiteList(args);
-            break;
         default:
-            return FAILURE;
             break;
     }
     return res;
@@ -57,12 +55,15 @@ bool Add_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searchedKe
 
 bool Add_cmd::handleBlackList(const QMap<Options, QString> args)
 {
-    std::cout << "Adding Blacklisted status to file" << std::endl;
-
     QSqlQuery query;
     QString temp_filename = getValue(args, FOLDER_PATH);
-    query.prepare("UPDATE files SET status = 'BLACKLIST' WHERE name = '" + temp_filename + "'"); // UNDEFINED
+    query.prepare("UPDATE files SET status = 'BLACKLIST' WHERE name = '" + temp_filename + "'");
     query.exec();
+
+    query.first();
+    query.next();
+    const QString result = query.value(0).toString();
+    qDebug() << "Updated " << result << " to blacklist status";
 
     //Handle Error
     if(query.lastError().isValid())
@@ -70,16 +71,18 @@ bool Add_cmd::handleBlackList(const QMap<Options, QString> args)
         qWarning() << query.lastError().text();
         return FAILURE;
     }
+
+    qDebug() << "Updated " << temp_filename << " to BlackList status";
+
     return SUCCESS;
 }
 
 bool Add_cmd::handleFilters(const QMap<Options, QString> args)
 {
-    std::cout << "Adding Filters" << std::endl;
-
     QSqlQuery query;
-    QString temp_filename = getValue(args, FOLDER_PATH);
-    query.prepare("UPDATE files SET status = 'FILTERS' WHERE name = '" + temp_filename + "'");
+    QString temp_suffix = getValue(args, FOLDER_PATH);
+    temp_suffix.remove("*.");
+    query.prepare("UPDATE files SET status = 'FILTERS' WHERE suffix = '" + temp_suffix + "'");
     query.exec();
 
     //Handle Error
@@ -88,16 +91,18 @@ bool Add_cmd::handleFilters(const QMap<Options, QString> args)
         qWarning() << query.lastError().text();
         return FAILURE;
     }
+
+    qDebug() << "Updated all files with " << temp_suffix << " extension to Filters status";
+
     return SUCCESS;
 }
 
 bool Add_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 {
-    std::cout << "Adding Skipped Filters" << std::endl;
-
     QSqlQuery query;
-    QString temp_filename = getValue(args, FOLDER_PATH);
-    query.prepare("UPDATE files SET status = 'SKIPPED_FILTERS' WHERE name = '" + temp_filename + "'");
+    QString temp_suffix = getValue(args, FOLDER_PATH);
+    temp_suffix.remove("*.");
+    query.prepare("UPDATE files SET status = 'FILTERS' WHERE suffix = '" + temp_suffix + "'");
     query.exec();
 
     //Handle Error
@@ -106,15 +111,18 @@ bool Add_cmd::handleSkippedFilters(const QMap<Options, QString> args)
         qWarning() << query.lastError().text();
         return FAILURE;
     }
+
+    qDebug() << "Updated " << temp_suffix << " to Skipped Filters status";
+
     return SUCCESS;
 }
 
 bool Add_cmd::handleWhiteList(const QMap<Options, QString> args)
 {
-    std::cout << "Adding WhiteListed Files" << std::endl;
-
     QSqlQuery query;
     QString temp_filename = getValue(args, FOLDER_PATH);
+
+    qDebug() << "temp : " << temp_filename;
     query.prepare("UPDATE files SET status = 'WHITELIST' WHERE name = '" + temp_filename + "'");
     query.exec();
 
@@ -124,5 +132,8 @@ bool Add_cmd::handleWhiteList(const QMap<Options, QString> args)
         qWarning() << query.lastError().text();
         return FAILURE;
     }
+
+    qDebug() << "Updated " << temp_filename << " to WhiteList status";
+
     return SUCCESS;
 }

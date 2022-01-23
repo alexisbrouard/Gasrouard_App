@@ -19,6 +19,7 @@ void Indexer::scanRepository(QString m_start_path)
         while(it.hasNext())
         {
             QFile file(it.next());
+            temp.clear();
 
             //Path
             temp.append(it.filePath());

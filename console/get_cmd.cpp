@@ -1,8 +1,6 @@
 #include "get_cmd.h"
 
-Get_cmd::Get_cmd() : CommandFactory()
-{
-}
+Get_cmd::Get_cmd() : CommandFactory() {}
 
 bool Get_cmd::execute(QMap<Options, QString> args)
 {
@@ -61,9 +59,10 @@ bool Get_cmd::handleBlackList(const QMap<Options, QString> args)
 
     std::cout << "Getting All files BlackListed" << std::endl;
 
-    QSqlQuery query;
-    query.prepare("SELECT * FROM files WHERE status = 'BLACKLIST'");
-    query.exec();
+    QSqlQuery query("SELECT * FROM files WHERE status = 'BLACKLIST'");
+    while (query.next()) {
+           qDebug() << "File BlackListed: " << query.value(2).toString();
+    }
 
     //Handle Error
     if(query.lastError().isValid())
@@ -71,6 +70,17 @@ bool Get_cmd::handleBlackList(const QMap<Options, QString> args)
         qWarning() << query.lastError().text();
         return FAILURE;
     }
+
+    QSqlQuery retCount("SELECT COUNT(*) FROM files WHERE status = 'BLACKLIST'");
+
+    if(retCount.lastError().isValid())
+    {
+        qWarning() << retCount.lastError().text();
+        return FAILURE;
+    }
+
+    retCount.first();
+    qDebug() << "There are " << retCount.value(0).toInt() << " files with status BLACKLIST";
     return SUCCESS;
 }
 
@@ -81,16 +91,27 @@ bool Get_cmd::handleFilters(const QMap<Options, QString> args)
     if (args.empty())
         return FAILURE;
 
-    QSqlQuery query;
-    query.prepare("SELECT * FROM files WHERE status = 'FILTERS'");
-    query.exec();
+    QSqlQuery retRes("SELECT * FROM files WHERE status = 'FILTERS'");
+    while (retRes.next()) {
+           qDebug() << "File FILTERS: " << retRes.value(2).toString();
+    }
 
-    //Handle Error
-    if(query.lastError().isValid())
+    if(retRes.lastError().isValid())
     {
-        qWarning() << query.lastError().text();
+        qWarning() << retRes.lastError().text();
         return FAILURE;
     }
+
+    QSqlQuery retCount("SELECT COUNT(*) FROM files WHERE status = 'FILTERS'");
+
+    if(retCount.lastError().isValid())
+    {
+        qWarning() << retCount.lastError().text();
+        return FAILURE;
+    }
+
+    retCount.first();
+    qDebug() << "There are " << retCount.value(0).toInt() << " files with status Filters";
     return SUCCESS;
 }
 
@@ -111,6 +132,22 @@ bool Get_cmd::handleSkippedFilters(const QMap<Options, QString> args)
         qWarning() << query.lastError().text();
         return FAILURE;
     }
+
+    QSqlQuery retRes("SELECT * FROM files WHERE status = 'SKIPPED_FILTERS'");
+    while (retRes.next()) {
+           qDebug() << "File SKIPPED_FILTERS: " << retRes.value(2).toString();
+    }
+
+    QSqlQuery retCount("SELECT COUNT(*) FROM files WHERE status = 'SKIPPED_FILTERS'");
+
+    if(retCount.lastError().isValid())
+    {
+        qWarning() << retCount.lastError().text();
+        return FAILURE;
+    }
+
+    retCount.first();
+    qDebug() << "There are " << retCount.value(0).toInt() << " files with status SKIPPED_FILTERS";
     return SUCCESS;
 }
 
@@ -118,8 +155,6 @@ bool Get_cmd::handleWhiteList(const QMap<Options, QString> args)
 {
     std::cout << "Getting All files WhiteListed" << std::endl;
 
-    if (args.empty())
-        return FAILURE;
     if (args.empty())
         return FAILURE;
 
@@ -133,5 +168,17 @@ bool Get_cmd::handleWhiteList(const QMap<Options, QString> args)
         qWarning() << query.lastError().text();
         return FAILURE;
     }
+
+    QSqlQuery retCount("SELECT COUNT(*) FROM files WHERE status = 'WHITELIST'");
+
+    if(retCount.lastError().isValid())
+    {
+        qWarning() << retCount.lastError().text();
+        return FAILURE;
+    }
+
+    retCount.first();
+    qDebug() << "There are " << retCount.value(0).toInt() << " files with status WHITELIST";
+
     return SUCCESS;
 }

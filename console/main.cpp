@@ -11,7 +11,8 @@ int main(int argc, char *argv[])
     Statemachine obj;
     Indexer indexer;
     std::string line;
-    //indexer.scanRepository("C:/Users/Cameron/OneDrive/Documents/Battlefield 4");
+    indexer.scanRepository("C:/Users/Cameron/OneDrive/Documents/Battlefield 4");
+    std::cout << "Welcome dear user, Please wait a minute for indexation completion" << std::endl;
 
     while (1) {
         std::cout << "> " << std::flush;
@@ -27,9 +28,6 @@ int main(int argc, char *argv[])
     }
     return app.exec();
 
-
-    /* OP */
-    //
     //obj.manageUserInput("INDEXER RESUME"); // works
 
     //obj.manageUserInput("GET WHITELIST"); // works

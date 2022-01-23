@@ -16,9 +16,6 @@ void Statemachine::manageUserInput(QString userInput)
         qDebug() << i.key() << ": " << i.value();
         ++i;
     }
-    qDebug() << "Map printed";
-    if (_argsMap.isEmpty())
-        qDebug() << "Map empty";
 
     Options currentAction = getKey(_argsMap, "ACTION");
 
@@ -71,7 +68,6 @@ void Statemachine::fillArgsMap(QString userInput)
     bool endOPT = false;
 
     for (int i = 0, lastOPT = filteredInput.size() - 1; i < filteredInput.size(); i++) {
-        qDebug() << "word:" << filteredInput[i];
         /* Check for last OPT */
         if (i == lastOPT)
             endOPT = true;
@@ -79,8 +75,8 @@ void Statemachine::fillArgsMap(QString userInput)
         checkState(INITIAL, ADD, isParamsCompare(filteredInput[i], "ADD"), "ACTION");
         checkState(ADD, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
         checkState(ADD, BLACKLIST, isParamsCompare(filteredInput[i], "BLACKLIST"), "FLAG");
-        checkState(ADD, FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(ADD, SKIPPED_FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(ADD, FILTERS, isParamsCompare(filteredInput[i], "FILTERS"), "FLAG");
+        checkState(ADD, SKIPPED_FILTERS, isParamsCompare(filteredInput[i], "SKIPPED_FILTERS"), "FLAG");
         checkState(WHITELIST, FOLDER_PATH, endOPT, filteredInput[i]);
         checkState(BLACKLIST, FOLDER_PATH, endOPT, filteredInput[i]);
         checkState(FILTERS, FOLDER_PATH, endOPT, filteredInput[i]);
@@ -90,8 +86,8 @@ void Statemachine::fillArgsMap(QString userInput)
         checkState(INITIAL, GET, isParamsCompare(filteredInput[i], "GET"), "ACTION");
         checkState(GET, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
         checkState(GET, BLACKLIST, isParamsCompare(filteredInput[i], "BLACKLIST"), "FLAG");
-        checkState(GET, FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(GET, SKIPPED_FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(GET, FILTERS, isParamsCompare(filteredInput[i], "FILTERS"), "FLAG");
+        checkState(GET, SKIPPED_FILTERS, isParamsCompare(filteredInput[i], "SKIPPED_FILTERS"), "FLAG");
 
                                 /* INDEXER */
         checkState(INITIAL, INDEXER, isParamsCompare(filteredInput[i], "INDEXER"), "ACTION");
@@ -105,16 +101,14 @@ void Statemachine::fillArgsMap(QString userInput)
         checkState(INITIAL, CLEAR, isParamsCompare(filteredInput[i], "CLEAR" ), "ACTION");
         checkState(CLEAR, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
         checkState(CLEAR, BLACKLIST, isParamsCompare(filteredInput[i], "BLACKLIST"), "FLAG");
-        checkState(CLEAR, SKIPPED_FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(CLEAR, FILTERS, isExtension(filteredInput[i]), filteredInput[i]);
+        checkState(CLEAR, SKIPPED_FILTERS, isExtension(filteredInput[i]), "FLAG");
+        checkState(CLEAR, FILTERS, isExtension(filteredInput[i]), "FLAG");
 
         /*
          * SEARCH toto LAST_MODIFIED:BETWEEN 2 days and 3 days CREATED:31/12/2020 MAX_SIZE:10M MIN_SIZE:1M SIZE:BETWEEN 10M AND 20M EXT:txt,doc,xlsx "
                         "TYPE:image OR text"
         */
-
                                 /* Search */
-
         checkState(SEARCH, WORD, isWord(filteredInput[i]), filteredInput[i]);
         checkState(INITIAL, SEARCH, isParamsCompare(filteredInput[i], "SEARCH"), "ACTION");
         checkState(WORD, LAST_MODIFIED, isDate(filteredInput[i]), filteredInput[i]);
@@ -145,7 +139,6 @@ bool Statemachine::isParamsCompare(QString const &origin, QString const &in)
 {
     int res = QString::compare(origin, in, Qt::CaseInsensitive);
     if (res == 0) {
-        qDebug() << "comparing:" << origin << "in: " << in;
         return true;
     }
     return false;
@@ -161,7 +154,13 @@ void Statemachine::checkState(Options previous, Options next, bool condition, QS
 
 bool Statemachine::isExtension(QString const &str)
 {
-    return str.contains('.');
+    int res = str.contains('.', Qt::CaseInsensitive);
+    int res2 = str.contains('*', Qt::CaseInsensitive);
+    if (res == 0 && res2 == 0) {
+        qDebug() << "inside ext verif: " << str;
+        return true;
+    }
+    return false;
 }
 
 bool Statemachine::isValidPath(QString const &str)

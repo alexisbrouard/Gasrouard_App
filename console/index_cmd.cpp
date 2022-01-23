@@ -9,7 +9,6 @@ bool Index_cmd::execute(QMap<Options, QString> args)
     bool res = false;
 
      Options currentOption = getKey(args, "FLAG");
-     //qDebug() << "FLAG: " << currentOption << "| CMD : INDEX" ;
      switch (currentOption) {
          case START:
              res = handleStart(args);

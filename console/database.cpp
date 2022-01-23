@@ -47,15 +47,13 @@ void Database::addDatabase(QVector<QStringList> _vectorIndexes)
     QFuture<void> future = QtConcurrent::run(&_pool, [this, _vectorIndexes]() {
         QSqlQuery query(_Database);
 
-        qDebug() <<"Adding to DB";
-
         query.exec("pragma temp_store = memory");
         query.exec("PRAGMA synchronous = normal");
         query.exec("pragma mmap_size = 30000000000");
         query.exec("PRAGMA journal_mode = wal");
         query.prepare("INSERT OR IGNORE INTO files(path, name, suffix, size, creation, modified, status) VALUES(?, ?, ?, ?, ?, ?, ?)");
 
-        for(int i = 0; i< _vectorIndexes.size(); i++)
+        for(int i = 0; i < _vectorIndexes.size(); i++)
         {
             for(int j = 0; j <= 6; j++)
             {

@@ -132,5 +132,6 @@ bool Clear_cmd::handleWhiteList(const QMap<Options, QString> args)
         qWarning() << query.lastError().text();
         return FAILURE;
     }
+
     return SUCCESS;
 }
