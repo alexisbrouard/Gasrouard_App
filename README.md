@@ -39,6 +39,7 @@ Ecrire dans la console :
 
 ### Commandes SQL
 Création d'une requêtes SQL pour les commandes :
+
 `GET - Exécution d'une requête SELECT afin de récupérer les données de la base`
 
 `CLEAR - Exécution d'une requête DELETE afin de supprimer les données de la base`
