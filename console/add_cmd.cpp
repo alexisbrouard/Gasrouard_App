@@ -122,7 +122,6 @@ bool Add_cmd::handleWhiteList(const QMap<Options, QString> args)
     QSqlQuery query;
     QString temp_filename = getValue(args, FOLDER_PATH);
 
-    qDebug() << "temp : " << temp_filename;
     query.prepare("UPDATE files SET status = 'WHITELIST' WHERE name = '" + temp_filename + "'");
     query.exec();
 

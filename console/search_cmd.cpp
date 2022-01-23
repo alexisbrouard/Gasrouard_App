@@ -8,25 +8,10 @@ bool Search_cmd::execute(QMap<Options, QString> args)
 {
     bool res = FAILURE;
 
-    Options currentOption = getKey(args, "FLAG");
-    qDebug() << "FLAG: " << currentOption << "| CMD : SEARCH" ;
-
-    switch (currentOption) {
-        case BLACKLIST :
-            res = handleBlackList(args);
-            break;
-        case FILTERS :
-            res = handleFilters(args);
-            break;
-        case SKIPPED_FILTERS :
-            res = handleSkippedFilters(args);
-            break;
-        case WHITELIST :
-            res = handleWhiteList(args);
-            break;
-        default:
-            return FAILURE;
-            break;
+    QMapIterator<Options, QString> i(args);
+    while (i.hasNext()) {
+        i.next();
+        qDebug() << "Key: " << i.key() << " value: " << i.value();
     }
     return res;
 }
@@ -57,6 +42,9 @@ bool Search_cmd::isKeyPresent(const QMap<Options, QString> &map, Options searche
 
 bool Search_cmd::handleBlackList(const QMap<Options, QString> args)
 {
+    if (args.empty())
+        return FAILURE;
+
     QSqlQuery query;
     query.prepare("");
     query.exec();
@@ -71,7 +59,10 @@ bool Search_cmd::handleBlackList(const QMap<Options, QString> args)
 }
 
 bool Search_cmd::handleFilters(const QMap<Options, QString> args)
-{
+{   
+    if (args.empty())
+        return FAILURE;
+
     QSqlQuery query;
     query.prepare("");
     query.exec();
@@ -86,7 +77,10 @@ bool Search_cmd::handleFilters(const QMap<Options, QString> args)
 }
 
 bool Search_cmd::handleSkippedFilters(const QMap<Options, QString> args)
-{
+{   
+    if (args.empty())
+        return FAILURE;
+
     QSqlQuery query;
     query.prepare("");
     query.exec();
@@ -102,6 +96,9 @@ bool Search_cmd::handleSkippedFilters(const QMap<Options, QString> args)
 
 bool Search_cmd::handleWhiteList(const QMap<Options, QString> args)
 {
+    if (args.empty())
+        return FAILURE;
+
     QSqlQuery query;
     query.prepare("");
     query.exec();

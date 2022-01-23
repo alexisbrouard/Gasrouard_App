@@ -9,7 +9,6 @@ bool Clear_cmd::execute(QMap<Options, QString> args)
     bool res = FAILURE;
 
     Options currentOption = getKey(args, "FLAG");
-    //qDebug() << "FLAG: " << currentOption << "| CMD : CLEAR" ;
 
     switch (currentOption) {
         case BLACKLIST :

@@ -7,19 +7,10 @@ Statemachine::Statemachine()
 
 void Statemachine::manageUserInput(QString userInput)
 {
-    qDebug() << "user input: " << userInput;
     fillArgsMap(userInput);
-
-    /*Temp Print*/
-    QMap<Options, QString>::iterator i = _argsMap.begin();
-    while (i != _argsMap.end()) {
-        qDebug() << i.key() << ": " << i.value();
-        ++i;
-    }
 
     Options currentAction = getKey(_argsMap, "ACTION");
 
-    qDebug() << "current action :" << currentAction;
     if (currentAction != Options::UNDEFINED) {
         switch(currentAction) {
             case Options::ADD :
@@ -50,17 +41,10 @@ void Statemachine::manageUserInput(QString userInput)
     bool command_ret = _factory->execute(_argsMap);
     command_ret ? qDebug() << "Command Success" : qDebug() << "Command Failure";
 
-    /*Ressetting the FSM*/
+    /* Ressetting the FSM */
     _argsMap.clear();
     _currentOption = Options::INITIAL;
 }
-
-/*
- * Add must be done the folders already on the DB, must retrieve them if check is here (currently no, must check in cmd)
-*/
-/*
- * TO make the push work must create multiple options to hold all folders (Folder_path1, folder_path2, ect..)
-*/
 
 void Statemachine::fillArgsMap(QString userInput)
 {
@@ -68,7 +52,6 @@ void Statemachine::fillArgsMap(QString userInput)
     bool endOPT = false;
 
     for (int i = 0, lastOPT = filteredInput.size() - 1; i < filteredInput.size(); i++) {
-        /* Check for last OPT */
         if (i == lastOPT)
             endOPT = true;
                                  /* ADD */
@@ -101,8 +84,8 @@ void Statemachine::fillArgsMap(QString userInput)
         checkState(INITIAL, CLEAR, isParamsCompare(filteredInput[i], "CLEAR" ), "ACTION");
         checkState(CLEAR, WHITELIST, isParamsCompare(filteredInput[i], "WHITELIST"), "FLAG");
         checkState(CLEAR, BLACKLIST, isParamsCompare(filteredInput[i], "BLACKLIST"), "FLAG");
-        checkState(CLEAR, SKIPPED_FILTERS, isExtension(filteredInput[i]), "FLAG");
-        checkState(CLEAR, FILTERS, isExtension(filteredInput[i]), "FLAG");
+        checkState(CLEAR, SKIPPED_FILTERS, isParamsCompare(filteredInput[i], "SKIPPED_FILTERS"), "FLAG");
+        checkState(CLEAR, FILTERS, isParamsCompare(filteredInput[i], "FILTERS"), "FLAG");
 
         /*
          * SEARCH toto LAST_MODIFIED:BETWEEN 2 days and 3 days CREATED:31/12/2020 MAX_SIZE:10M MIN_SIZE:1M SIZE:BETWEEN 10M AND 20M EXT:txt,doc,xlsx "
@@ -111,6 +94,7 @@ void Statemachine::fillArgsMap(QString userInput)
                                 /* Search */
         checkState(SEARCH, WORD, isWord(filteredInput[i]), filteredInput[i]);
         checkState(INITIAL, SEARCH, isParamsCompare(filteredInput[i], "SEARCH"), "ACTION");
+        //checkState(SEARCH, WORD, endOPT, "FOLDER_PATH");
         checkState(WORD, LAST_MODIFIED, isDate(filteredInput[i]), filteredInput[i]);
         checkState(LAST_MODIFIED, FIRST_NUM, isNumber(filteredInput[i]), filteredInput[i]);
         checkState(FIRST_NUM, FIRST_DATE, isParamsCompare(filteredInput[i], "days"), filteredInput[i]);
@@ -126,12 +110,12 @@ void Statemachine::fillArgsMap(QString userInput)
         checkState(AND_TWO, SIZE_NUM_TWO, isParamsCompare(filteredInput[i], "and"), filteredInput[i]);
         checkState(SIZE_NUM_TWO, EXTENSION, isExtension(filteredInput[i]), filteredInput[i]);
         // Other beginnings
-        checkState(WORD, DATE_CREATED, isDate(filteredInput[i]), filteredInput[i]);
+        /*checkState(WORD, DATE_CREATED, isDate(filteredInput[i]), filteredInput[i]);
         checkState(WORD, MAX_SIZE, isSize(filteredInput[i]), filteredInput[i]);
         checkState(WORD, MIN_SIZE, isSize(filteredInput[i]), filteredInput[i]);
         checkState(WORD, SIZE, isSize(filteredInput[i]), filteredInput[i]);
         checkState(WORD, EXTENSION, isExtension(filteredInput[i]), filteredInput[i]);
-        checkState(WORD, TYPE, isType(filteredInput[i]), filteredInput[i]);
+        checkState(WORD, TYPE, isType(filteredInput[i]), filteredInput[i]);*/
     }
 }
 
@@ -157,7 +141,6 @@ bool Statemachine::isExtension(QString const &str)
     int res = str.contains('.', Qt::CaseInsensitive);
     int res2 = str.contains('*', Qt::CaseInsensitive);
     if (res == 0 && res2 == 0) {
-        qDebug() << "inside ext verif: " << str;
         return true;
     }
     return false;
@@ -171,7 +154,6 @@ bool Statemachine::isValidPath(QString const &str)
 
 bool Statemachine::isDate(QString const &str)
 {
-    //return QDate::fromString(str,"dd/MM/yyyy"); how dafuk am i supposed to check this
     return str.contains('/');
 }
 
@@ -264,24 +246,6 @@ enum Options Statemachine::isOption(QString const &str)
     else if (str.compare("INDEXER"))
         return INDEXER;
     return UNDEFINED;
-    /*
-    TYPE,
-    AND,
-    COMA,
-
-    WORD,
-    NUMBER,
-    AWAITING,
-    ENDING,
-    UNDEFINED,
-
-    INITIAL,
-    START,
-    STOP,
-    PAUSE,
-    RESUME,
-    STATE,
-    STATUS*/
 }
 
 Options Statemachine::getOption()
