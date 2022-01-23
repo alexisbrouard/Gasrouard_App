@@ -36,6 +36,17 @@ Ecrire dans la console :
 `INDEXER <RESUME | STOP | START | PAUSE | STATUS>``SEARCH <...>`
 
 **Toutes ces données ne sont pas CaseSensitve !**
+
+### Commandes SQL
+Création d'une requêtes SQL pour les commandes :
+`GET - Exécution d'une requête SELECT afin de récupérer les données de la base`
+
+`CLEAR - Exécution d'une requête DELETE afin de supprimer les données de la base`
+
+`ADD - Exécution d'une requête UPDATE afin de changé le statuts des fichiers dans la base de données`
+
+`SEARCH - Exécution d'une requête SELECT afin de récupérer un fichier qui correspond à tous les paramètres donnés, pouvant être interchangé ou absent de la commande`
+
 ## Problèmes rencontrés
 
 - L'indexer est bien détecté mais n'a aucun effet sur l'application.
