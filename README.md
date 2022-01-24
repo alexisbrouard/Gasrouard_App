@@ -37,6 +37,8 @@ Ecrire dans la console :
 
 **Toutes ces données ne sont pas CaseSensitve !**
 
+Il faut écrire `ADD <filters | skipped> *.ext` pour l'utilisation du filters et skipped filters.
+
 ### Commandes SQL
 Création d'une requêtes SQL pour les commandes :
 
