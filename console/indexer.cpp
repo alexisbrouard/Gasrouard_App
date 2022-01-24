@@ -23,7 +23,6 @@ void Indexer::scanRepository(QString m_start_path)
 
             //Path
             temp.append(it.filePath());
-            //qDebug() << "Filename: " << it.filePath();
 
             //Name
             temp.append(it.fileInfo().fileName());
@@ -58,6 +57,5 @@ void Indexer::scanRepository(QString m_start_path)
 
 void Indexer::sendDatabase()
 {
-    qDebug() << "Prep to sending";
     _db.addDatabase(_vectorIndexes);
 }

@@ -158,9 +158,10 @@ bool Get_cmd::handleWhiteList(const QMap<Options, QString> args)
     if (args.empty())
         return FAILURE;
 
-    QSqlQuery query;
-    query.prepare("SELECT * FROM files WHERE status = 'WHITELIST'");
-    query.exec();
+    QSqlQuery query("SELECT * FROM files WHERE status = 'WHITELIST'");
+    while (query.next()) {
+           qDebug() << "File WhiteListed: " << query.value(2).toString();
+    }
 
     //Handle Error
     if(query.lastError().isValid())
@@ -178,7 +179,7 @@ bool Get_cmd::handleWhiteList(const QMap<Options, QString> args)
     }
 
     retCount.first();
-    qDebug() << "There are " << retCount.value(0).toInt() << " files with status WHITELIST";
+    qDebug() << "There are " << retCount.value(0).toInt() << " file(s) with status WHITELIST";
 
     return SUCCESS;
 }
